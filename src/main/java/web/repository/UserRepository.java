@@ -1,13 +1,14 @@
 package web.repository;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import web.model.User;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Component
+@Repository
 @Transactional
 public class UserRepository {
     @PersistenceContext
@@ -20,6 +21,12 @@ public class UserRepository {
 
     @Transactional
     public void save(User user) {
+        User managed = entityManager.merge(user);
+        entityManager.persist(managed);
+    }
+
+    @Transactional
+    public void update(User user) {
         User managed = entityManager.merge(user);
         entityManager.persist(managed);
     }
